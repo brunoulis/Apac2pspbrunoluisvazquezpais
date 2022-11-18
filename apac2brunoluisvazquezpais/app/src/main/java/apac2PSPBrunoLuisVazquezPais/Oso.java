@@ -4,7 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
-class Oso { // Quizás tengamos que añadir algo aquí
+class Oso implements Runnable{ // Quizás tengamos que añadir algo aquí
 
     private Integer x = 100, y = 100;
     private Integer screenX, screenY;
@@ -67,5 +67,10 @@ class Oso { // Quizás tengamos que añadir algo aquí
             
         gc.drawImage(image, x, y);
 
+    }
+
+    @Override
+    public void run() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

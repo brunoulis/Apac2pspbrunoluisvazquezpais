@@ -65,17 +65,25 @@ class Miel {
         return (this.Panal.size() > 0);
     }
 
-    
     // To-Do: Implementación del método Produce(int x, int y)
-    public synchronized void Produce(int x, int y){
-    
-    
+    public synchronized void Produce(int x, int y) {
+        if (PanalDisponible()) {
+            Panal.add(new Posicion(x, y));
+        }
+
     }
 
     // To-Do: Implementación del método Recolecta(int x, int y).
-    public synchronized void Recolecta(int x, int y){
-    
-    
+    public synchronized void Recolecta(int x, int y) {
+        if (MielDisponible()) {
+            for (int i = 0; i < Panal.size(); i++) {
+                if ((x >= Panal.get(i).getX() - 5) && (x <= Panal.get(i).getX() + 5) && (y >= Panal.get(i).getY() - 5)
+                        && (y <= Panal.get(i).getY() + 5)) {
+                    Panal.remove(i);
+                }
+            }
+        }
+
     }
 
     // Método para dibujar el panal

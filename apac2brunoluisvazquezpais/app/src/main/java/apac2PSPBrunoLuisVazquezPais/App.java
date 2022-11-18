@@ -53,7 +53,7 @@ public class App extends Application {
         // Leemos los parámetros
         List<String> args = getParameters().getRaw();
 
-        // Para establecer el número de abejas, osos y 
+        // Para establecer el número de abejas, osos y
         // el tamaño del panal
         this.num_abejas = Integer.parseInt(args.get(0));
         this.num_osos = Integer.parseInt(args.get(1));
@@ -65,7 +65,7 @@ public class App extends Application {
             // - Declarar un vector o lista de hilos para las abejas,
             // otro para los osos, así como un nuevo hilo para el jugador.
 
-            // Creamos un objeto compartido (panal) de tipo Miel, 
+            // Creamos un objeto compartido (panal) de tipo Miel,
             // de la longitud indicada per el tamaño del panal.
             panal = new Miel(this.tamanyo_panal);
 
@@ -74,13 +74,30 @@ public class App extends Application {
 
             // TO-DO
             // - Creación de los threads para las abejas
+            // Pasaremos al constructor H Y W que es el tamaño de la ventana
+            for (int i = 0; i < num_abejas; i++) {
+                ListaAbejas[i] = new Abeja(H, W, panal);
+                ListaThreadsAbejas[i] = new Thread(ListaAbejas[i]);
+            }
             // - Creación de los threads para los osos
+            for (int i = 0; i < num_osos; i++) {
+                ListaOsos[i] = new Oso(H, W, panal);
+                ListaThreadsOsos[i] = new Thread(ListaOsos[i]);
+            }
             // - Creación del thread para el jugador
+            threadPlayer = new Thread(player);
 
             // TO-DO
             // - Arrancamos los threads de las abejas
+            for (int i = 0; i < num_abejas; i++) {
+                ListaThreadsAbejas[i].start();
+            }
             // - Arrancamos los threads de lps osos
+            for (int i = 0; i < num_osos; i++) {
+                ListaThreadsOsos[i].start();
+            }
             // - Arrancamos el thread del jugador
+            threadPlayer.start();
 
         } catch (Exception e) {
 
@@ -116,16 +133,15 @@ public class App extends Application {
                     gc.setFill(Color.BEIGE); // Color de fondo de la pantalla
                     gc.fillRect(0, 0, W, H); // Para borrar la pantalla
 
-                    
                     // Y ahora dibujamos cada elemento
                     for (int i = 0; i < num_osos; i++) {
                         // TO-DO: Eliminamos este comentario para dibujar los osos
                         // ListaOsos[i].drawMe(gc);
                     }
-                    
+
                     for (int i = 0; i < num_abejas; i++) {
                         // TO-DO: Eliminar este comentario para dibujar las abejas
-                        // ListaAbejas[i].drawMe(gc);
+                        ListaAbejas[i].drawMe(gc);
                     }
 
                     // TO-DO:
@@ -136,7 +152,7 @@ public class App extends Application {
                     //
                     // Si deseamos dibujar más cosas, deberíamos hacerlo aquí
                     //
-                    
+
                 } catch (Exception e) {
                     System.out.println("Excepción: " + e.getMessage());
                 }
@@ -166,8 +182,9 @@ public class App extends Application {
     public static void main(String[] args) {
 
         if (args.length != 3) {
-            System.out.println("Sintaxis incorrecta\n Sintaxis: java App nº_abejas nº_osos tamanyo_panal");
-            System.exit(0);
+            // Si no se pasan los parámetros, se establecen unos valores por defecto
+            String nArgs[] = { "10", "3", "100" };
+            args = nArgs;
         }
         launch(args);
 
